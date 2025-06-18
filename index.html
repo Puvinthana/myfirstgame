@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Addition Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .game-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .problem {
+            font-size: 2rem;
+            margin: 1rem 0;
+        }
+        input {
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            width: 100px;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .score {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+        .feedback {
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+        .correct {
+            color: #4CAF50;
+        }
+        .incorrect {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Math Addition Game</h1>
+        <div class="problem" id="problem"></div>
+        <input type="number" id="answer" placeholder="Your answer">
+        <br>
+        <button onclick="checkAnswer()">Check Answer</button>
+        <div class="score">Score: <span id="score">0</span></div>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <script>
+        let score = 0;
+        let currentAnswer = 0;
+
+        function generateProblem() {
+            const num1 = Math.floor(Math.random() * 50) + 1;
+            const num2 = Math.floor(Math.random() * 50) + 1;
+            currentAnswer = num1 + num2;
+            document.getElementById('problem').textContent = `${num1} + ${num2} = ?`;
+            document.getElementById('answer').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('answer').focus();
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            const feedback = document.getElementById('feedback');
+
+            if (isNaN(userAnswer)) {
+                feedback.textContent = 'Please enter a valid number';
+                feedback.className = 'feedback incorrect';
+                return;
+            }
+
+            if (userAnswer === currentAnswer) {
+                score += 1;
+                feedback.textContent = 'Correct!';
+                feedback.className = 'feedback correct';
+            } else {
+                feedback.textContent = `Incorrect. The answer was ${currentAnswer}`;
+                feedback.className = 'feedback incorrect';
+            }
+
+            document.getElementById('score').textContent = score;
+            setTimeout(generateProblem, 1500);
+        }
+
+        // Handle Enter key press
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Start the game
+        generateProblem();
+    </script>
+</body>
+</html> 
